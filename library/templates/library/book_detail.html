@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="detail-card">
+    <div class="detail-header">
+        <div>
+            <h1>{{ book.title }}</h1>
+            <p class="book-meta">{{ book.author }}{% if book.category %} · {{ book.category.name }}{% endif %}</p>
+        </div>
+        <div class="detail-actions">
+            <a class="button button-secondary" href="{% url 'edit_book' book.id %}">Edit</a>
+            <a class="button button-danger" href="{% url 'delete_book' book.id %}">Delete</a>
+        </div>
+    </div>
+
+    <div class="detail-body">
+        <div class="detail-image">
+            <img src="{{ book.cover_image.url }}" alt="Cover for {{ book.title }}">
+        </div>
+        <div class="detail-info">
+            <p>{{ book.description }}</p>
+            <p><strong>Copies Available:</strong> {{ book.available_copies }}</p>
+            {% if user_loan and overdue_days %}
+                <div class="alert alert-warning">Overdue by {{ overdue_days }} day{% if overdue_days != 1 %}s{% endif %}.</div>
+            {% endif %}
+            {% if user.is_authenticated %}
+                {% if user_loan %}
+                    <form class="inline-form" method="post" action="{% url 'return_book' user_loan.id %}">
+                        {% csrf_token %}
+                        <button class="button" type="submit">Return Book</button>
+                    </form>
+                {% elif book.available_copies > 0 %}
+                    <form class="inline-form" method="post" action="{% url 'borrow_book' book.id %}">
+                        {% csrf_token %}
+                        <button class="button">Borrow Book</button>
+                    </form>
+                {% else %}
+                    <p>No copies available to borrow.</p>
+                {% endif %}
+            {% else %}
+                <p><a class="button button-outline" href="{% url 'login' %}">Log in</a> to borrow this book.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

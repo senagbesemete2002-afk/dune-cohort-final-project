@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Books</h1>
+    <form class="search-form" method="get" action="{% url 'book_list' %}">
+        <input type="text" name="q" placeholder="Search by title or author" value="{{ q }}">
+        <button type="submit">Search</button>
+        {% if q %}<a class="link-button" href="{% url 'book_list' %}">Clear</a>{% endif %}
+    </form>
+</div>
+
+{% if books %}
+    <ul class="book-list">
+        {% for book in books %}
+            <li class="book-card">
+                <div class="book-card-main">
+                    <div>
+                        <a class="book-title" href="{% url 'book_detail' book.id %}">{{ book.title }}</a>
+                        <p class="book-meta">{{ book.author }}{% if book.category %} · {{ book.category.name }}{% endif %}</p>
+                    </div>
+                    <div class="book-actions">
+                        <a class="button button-secondary" href="{% url 'edit_book' book.id %}">Edit</a>
+                        <a class="button button-danger" href="{% url 'delete_book' book.id %}">Delete</a>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <div class="empty-state">
+        <p>No books are available yet.</p>
+        <a class="button" href="{% url 'add_book' %}">Add a book</a>
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Confirm Return</h1>
+
+<p>Are you sure you want to return "{{ loan.book.title }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, return</button>
+    <a href="{% url 'book_detail' loan.book.id %}">Cancel</a>
+</form>
+
+{% endblock %}

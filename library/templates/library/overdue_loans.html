@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Overdue Loans (as of {{ today }})</h1>
+
+{% if overdue_list %}
+    <table>
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>User</th>
+                <th>Due Date</th>
+                <th>Days Overdue</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in overdue_list %}
+                <tr>
+                    <td><a href="{% url 'book_detail' item.loan.book.id %}">{{ item.loan.book.title }}</a></td>
+                    <td>{{ item.loan.user.username }}</td>
+                    <td>{{ item.loan.return_date }}</td>
+                    <td>{{ item.days_overdue }}</td>
+                    <td>
+                        <form method="post" action="{% url 'return_book' item.loan.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Mark Returned</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No overdue loans.</p>
+{% endif %}
+
+{% endblock %}

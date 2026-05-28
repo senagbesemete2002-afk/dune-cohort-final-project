@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Confirm Borrow</h1>
+
+<p>Do you want to borrow "{{ book.title }}" by {{ book.author }}?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, borrow</button>
+    <a href="{% url 'book_detail' book.id %}">Cancel</a>
+</form>
+
+{% endblock %}
