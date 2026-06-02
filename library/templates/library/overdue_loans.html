@@ -2,14 +2,25 @@
 
 {% block content %}
 
-<h1>Overdue Loans (as of {{ today }})</h1>
+<div class="page-header">
+    <h1>{% if is_staff_view %}All Overdue Loans{% else %}My Overdue Loans{% endif %} (as of {{ today }})</h1>
+</div>
 
 {% if overdue_list %}
+    {% if is_staff_view %}
+        <div class="overdue-stats">
+            <p><strong>Total Overdue Loans from Students:</strong> {{ overdue_list|length }}</p>
+        </div>
+    {% endif %}
+    
     <table>
         <thead>
             <tr>
+                {% if is_staff_view %}
+                    <th>Student</th>
+                {% endif %}
                 <th>Book</th>
-                <th>User</th>
+                <th>Author</th>
                 <th>Due Date</th>
                 <th>Days Overdue</th>
                 <th>Action</th>
@@ -17,15 +28,18 @@
         </thead>
         <tbody>
             {% for item in overdue_list %}
-                <tr>
+                <tr class="overdue-row">
+                    {% if is_staff_view %}
+                        <td><strong>{{ item.loan.user.get_full_name|default:item.loan.user.username }}</strong></td>
+                    {% endif %}
                     <td><a href="{% url 'book_detail' item.loan.book.id %}">{{ item.loan.book.title }}</a></td>
-                    <td>{{ item.loan.user.username }}</td>
+                    <td>{{ item.loan.book.author }}</td>
                     <td>{{ item.loan.return_date }}</td>
-                    <td>{{ item.days_overdue }}</td>
+                    <td><span class="days-overdue">{{ item.days_overdue }} day{{ item.days_overdue|pluralize }}</span></td>
                     <td>
                         <form method="post" action="{% url 'return_book' item.loan.id %}">
                             {% csrf_token %}
-                            <button type="submit">Mark Returned</button>
+                            <button type="submit" class="button button-small">Mark Returned</button>
                         </form>
                     </td>
                 </tr>
@@ -33,7 +47,49 @@
         </tbody>
     </table>
 {% else %}
-    <p>No overdue loans.</p>
+    <div class="empty-state">
+        <p>{% if is_staff_view %}No overdue loans from students.{% else %}You have no overdue loans.{% endif %}</p>
+        <a class="button" href="{% url 'book_list' %}">Back to Books</a>
+    </div>
 {% endif %}
+
+<style>
+    .overdue-row {
+        background-color: #fff5f5;
+    }
+    
+    .days-overdue {
+        font-weight: bold;
+        color: #721c24;
+    }
+    
+    .overdue-stats {
+        background-color: #f8d7da;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        border-left: 4px solid #721c24;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    
+    table thead {
+        background-color: #f5f5f5;
+    }
+    
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    table tbody tr:hover {
+        background-color: #fef5f5;
+    }
+</style>
 
 {% endblock %}

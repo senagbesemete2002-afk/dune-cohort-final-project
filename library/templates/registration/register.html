@@ -2,7 +2,11 @@
 
 {% block content %}
 
-<h1>Register</h1>
+<h1>{% if role %}Register as {{ role|title }}{% else %}Register{% endif %}</h1>
+
+{% if not role %}
+    <p>Choose whether to register as a student or as a staff member.</p>
+{% endif %}
 
 <form method="post">
     {% csrf_token %}

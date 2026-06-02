@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Library Dashboard</h1>
+        <p>Quick overview of books, loans, overdue items, and member activity.</p>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="stat-card">
+        <h2>Borrowed Books</h2>
+        <strong>{{ borrowed_books }}</strong>
+    </div>
+    <div class="stat-card">
+        <h2>Returned Books</h2>
+        <strong>{{ returned_books }}</strong>
+    </div>
+    <div class="stat-card">
+        <h2>Overdue Books</h2>
+        <strong>{{ overdue_books }}</strong>
+    </div>
+    <div class="stat-card">
+        <h2>Missing Books</h2>
+        <strong>{{ missing_books }}</strong>
+    </div>
+    <div class="stat-card">
+        <h2>Total Books</h2>
+        <strong>{{ total_books }}</strong>
+    </div>
+    <div class="stat-card">
+        <h2>Visitors</h2>
+        <strong>{{ visitors }}</strong>
+    </div>
+    <div class="stat-card">
+        <h2>New Members</h2>
+        <strong>{{ new_members }}</strong>
+    </div>
+    <div class="stat-card">
+        <h2>Pending Fees</h2>
+        <strong>${{ pending_fees }}</strong>
+    </div>
+</div>
+
+<div class="dashboard-panels">
+    <section class="dashboard-panel">
+        <h2>Recent Check-outs</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ISBN</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Member</th>
+                    <th>Issued Date</th>
+                    <th>Return Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in recent_loans %}
+                    <tr>
+                        <td>#{{ loan.id }}</td>
+                        <td>{{ loan.book.id }}</td>
+                        <td>{{ loan.book.title }}</td>
+                        <td>{{ loan.book.author }}</td>
+                        <td>{{ loan.user.username }}</td>
+                        <td>{{ loan.borrowed_date }}</td>
+                        <td>{{ loan.return_date }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7">No recent loans yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="dashboard-panel">
+        <h2>Top Books</h2>
+        <div class="top-books">
+            {% for book in top_books %}
+                <div class="top-book-card">
+                    <h3>{{ book.title }}</h3>
+                    <p>{{ book.author }}</p>
+                    <p><strong>Loans:</strong> {{ book.loan_count }}</p>
+                    <p><strong>Available:</strong> {{ book.available_copies }}</p>
+                </div>
+            {% empty %}
+                <p>No books available yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="dashboard-panel">
+        <h2>Recent Members</h2>
+        <h2>Recent Members</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Account Type</th>
+                    <th>Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in recent_members %}
+                    <tr>
+                        <td>{{ member.get_full_name|default:member.username }}</td>
+                        <td>{{ member.username }}</td>
+                        <td>{{ member.is_staff|yesno:"Staff,Student" }}</td>
+                        <td>{{ member.date_joined|date:"M j, Y" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No members registered yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% endblock %}

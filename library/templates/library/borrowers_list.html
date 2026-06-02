@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Active Borrowers</h1>
+    <p class="subtitle">View all active loans from students</p>
+</div>
+
+{% if loans %}
+    <div class="borrowers-stats">
+        <p><strong>Total Active Loans:</strong> {{ loans|length }}</p>
+    </div>
+
+    <table class="borrowers-table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Book</th>
+                <th>Author</th>
+                <th>Borrowed Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loan in loans %}
+                <tr>
+                    <td><strong>{{ loan.user.get_full_name|default:loan.user.username }}</strong></td>
+                    <td><a href="{% url 'book_detail' loan.book.id %}">{{ loan.book.title }}</a></td>
+                    <td>{{ loan.book.author }}</td>
+                    <td>{{ loan.borrowed_date }}</td>
+                    <td>
+                        <span class="due-date {% if loan.return_date < today %}overdue{% endif %}">
+                            {{ loan.return_date }}
+                            {% if loan.return_date < today %}
+                                <span class="status-badge overdue-badge">(Overdue)</span>
+                            {% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        {% if loan.return_date < today %}
+                            <span class="status-badge overdue">Overdue</span>
+                        {% else %}
+                            <span class="status-badge active">Active</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'return_book' loan.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="button button-small">Mark Returned</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="empty-state">
+        <p>No active loans at the moment.</p>
+        <a class="button" href="{% url 'book_list' %}">Back to Books</a>
+    </div>
+{% endif %}
+
+<style>
+    .borrowers-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    
+    .borrowers-table thead {
+        background-color: #f5f5f5;
+    }
+    
+    .borrowers-table th, .borrowers-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .borrowers-table tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+    
+    .status-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.85em;
+        font-weight: bold;
+    }
+    
+    .status-badge.active {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    
+    .status-badge.overdue {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    
+    .overdue-badge {
+        background-color: #f8d7da !important;
+        color: #721c24 !important;
+        margin-left: 8px;
+    }
+    
+    .due-date.overdue {
+        color: #721c24;
+        font-weight: bold;
+    }
+    
+    .button-small {
+        padding: 6px 12px;
+        font-size: 0.85em;
+    }
+    
+    .borrowers-stats {
+        background-color: #f0f0f0;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+    
+    .subtitle {
+        color: #666;
+        margin-top: 5px;
+    }
+</style>
+
+{% endblock %}

@@ -1,6 +1,19 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm
 from .models import Book, Category
+
+
+class CustomUserCreationForm(UserCreationForm):
+    ROLE_CHOICES = [
+        ('student', 'Student'),
+        ('staff', 'Staff'),
+    ]
+    role = forms.ChoiceField(choices=ROLE_CHOICES, label='Register as')
+
+    class Meta(UserCreationForm.Meta):
+        model = UserCreationForm.Meta.model
+        fields = UserCreationForm.Meta.fields
 
 
 class BookForm(forms.ModelForm):

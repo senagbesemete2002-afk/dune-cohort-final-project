@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>My Loans</h1>
+</div>
+
+{% if loans %}
+    <ul class="loan-list">
+        {% for loan in loans %}
+            <li class="loan-card">
+                <div class="loan-card-main">
+                    <div>
+                        <a class="book-title" href="{% url 'book_detail' loan.book.id %}">{{ loan.book.title }}</a>
+                        <p class="book-meta">{{ loan.book.author }}{% if loan.book.category %} · {{ loan.book.category.name }}{% endif %}</p>
+                        <p>Due date: <strong>{{ loan.return_date }}</strong></p>
+                    </div>
+                    <div class="loan-actions">
+                        <form method="post" action="{% url 'return_book' loan.id %}">
+                            {% csrf_token %}
+                            <button class="button button-primary" type="submit">Return</button>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <div class="empty-state">
+        <p>You have no active loans right now.</p>
+        <a class="button" href="{% url 'book_list' %}">Browse Books</a>
+    </div>
+{% endif %}
+
+{% endblock %}

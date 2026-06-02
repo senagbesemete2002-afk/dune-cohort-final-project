@@ -19,7 +19,12 @@ urlpatterns = [
 
     path('books/borrow/<int:id>/', views.borrow_book, name='borrow_book'),
     path('books/return/<int:loan_id>/', views.return_book, name='return_book'),
+    path('books/my-loans/', views.my_loans, name='my_loans'),
+    path('books/borrowers/', views.borrowers_list, name='borrowers_list'),
     path('books/overdue/', views.overdue_loans, name='overdue_loans'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('accounts/register/student/', views.register, {'role': 'student'}, name='register_student'),
+    path('accounts/register/staff/', views.register, {'role': 'staff'}, name='register_staff'),
     path('accounts/register/', views.register, name='register'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/logout/', views.logout_view, name='logout'),

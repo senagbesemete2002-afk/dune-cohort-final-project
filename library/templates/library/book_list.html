@@ -25,6 +25,14 @@
                         <a class="button button-danger" href="{% url 'delete_book' book.id %}">Delete</a>
                     </div>
                 </div>
+                <div class="book-card-footer">
+                    {% if book.available_copies > 0 %}
+                        <a class="button button-primary" href="{% url 'book_detail' book.id %}">Borrow / View</a>
+                    {% else %}
+                        <span class="book-unavailable">No copies available</span>
+                    {% endif %}
+                    <span class="book-copies">{{ book.available_copies }} available</span>
+                </div>
             </li>
         {% endfor %}
     </ul>
