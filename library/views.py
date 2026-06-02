@@ -55,7 +55,6 @@ def dashboard(request):
     return render(request, 'library/dashboard.html', context)
 
 
-@login_required
 def book_list(request):
     q = request.GET.get('q', '').strip()
     if q:
@@ -66,7 +65,6 @@ def book_list(request):
     return render(request, 'library/book_list.html', {'books': books, 'q': q})
 
 
-@login_required
 def book_detail(request, id):
     book = get_object_or_404(Book, id=id)
 
