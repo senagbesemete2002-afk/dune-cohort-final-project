@@ -1,3 +1,6 @@
+# render 
+https://dune-cohort-final-project-3.onrender.com/
+
 # Library Management System
 
 A Django library management application that lets users register, log in, browse books, borrow and return loans, and track overdue items.
@@ -10,6 +13,8 @@ A Django library management application that lets users register, log in, browse
 - Borrow and return books with confirmation workflows
 - View personal loans in `My Loans`
 - Track overdue loans separately
+- User profile support with account details and avatar upload
+- REST API built with Django REST Framework for books and loans
 
 ## Technology Stack
 
@@ -88,6 +93,20 @@ Render deployment files included:
 - `requirements.txt`
 - `Procfile`
 - `runtime.txt`
+- `postman_collection.json`
+
+## API
+
+The project exposes Django REST Framework endpoints under `/api/v2/`:
+
+- `GET /api/v2/books/`
+- `GET /api/v2/books/{id}/`
+- `POST /api/v2/books/` (staff only)
+- `DELETE /api/v2/books/{id}/` (staff only)
+- `GET /api/v2/loans/`
+- `GET /api/v2/loans/{id}/`
+- `POST /api/v2/loans/`
+- `DELETE /api/v2/loans/{id}/` (staff only)
 
 ## Notes
 

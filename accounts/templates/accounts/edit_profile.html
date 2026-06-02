@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Edit Profile</h1>
+<form method="post" enctype="multipart/form-data" class="form-card">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-field">{{ form.phone.label_tag }} {{ form.phone }}</div>
+    <div class="form-field">{{ form.favorite_genre.label_tag }} {{ form.favorite_genre }}</div>
+    <div class="form-field">{{ form.avatar.label_tag }} {{ form.avatar }}</div>
+    <button type="submit" class="button">Save changes</button>
+</form>
+{% endblock %}

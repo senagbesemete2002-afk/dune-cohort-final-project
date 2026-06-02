@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>My Profile</h1>
+<div class="profile-card">
+    {% if profile.avatar %}
+        <img class="profile-avatar" src="{{ profile.avatar.url }}" alt="{{ profile.user.username }} avatar">
+    {% endif %}
+    <dl>
+        <dt>Username</dt>
+        <dd>{{ profile.user.username }}</dd>
+        <dt>Email</dt>
+        <dd>{{ profile.user.email|default:'Not set' }}</dd>
+        <dt>Phone</dt>
+        <dd>{{ profile.phone|default:'Not provided' }}</dd>
+        <dt>Favorite genre</dt>
+        <dd>{{ profile.favorite_genre|default:'Not selected' }}</dd>
+        <dt>Joined</dt>
+        <dd>{{ profile.joined_at|date:'F j, Y' }}</dd>
+    </dl>
+    <p><a class="button" href="{% url 'edit_profile' %}">Edit profile</a></p>
+</div>
+{% endblock %}

@@ -1,9 +1,13 @@
- 
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from rest_framework.routers import DefaultRouter
 from . import views
 from . import api
+from .drf_views import BookViewSet, LoanViewSet
 
+router = DefaultRouter()
+router.register('books', BookViewSet, basename='book')
+router.register('loans', LoanViewSet, basename='loan')
 
 urlpatterns = [
 
@@ -34,6 +38,7 @@ urlpatterns = [
     path('api/books/<int:id>/', api.api_book_detail, name='api_book_detail'),
     path('api/loans/', api.api_loans, name='api_loans'),
     path('api/loans/<int:id>/', api.api_loan_detail, name='api_loan_detail'),
+    path('api/v2/', include(router.urls)),
 
     path('add-book/', views.add_book, name='add_book'),
 

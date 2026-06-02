@@ -1,0 +1,139 @@
+{
+  "info": {
+    "name": "Library API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Sample requests for the Django REST Framework API endpoints."
+  },
+  "item": [
+    {
+      "name": "Get Books",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v2/books/",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v2", "books", ""]
+        }
+      }
+    },
+    {
+      "name": "Get Book Detail",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/v2/books/1/",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v2", "books", "1", ""]
+        }
+      }
+    },
+    {
+      "name": "Create Book (Staff)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Token {{auth_token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"New Book\",\n  \"author\": \"Author Name\",\n  \"description\": \"A sample book description.\",\n  \"available_copies\": 3\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v2/books/",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v2", "books", ""]
+        }
+      }
+    },
+    {
+      "name": "Delete Book (Staff)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Token {{auth_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v2/books/1/",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v2", "books", "1", ""]
+        }
+      }
+    },
+    {
+      "name": "Get Loans",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Token {{auth_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v2/loans/",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v2", "loans", ""]
+        }
+      }
+    },
+    {
+      "name": "Create Loan",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Token {{auth_token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"book_id\": 1\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v2/loans/",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v2", "loans", ""]
+        }
+      }
+    },
+    {
+      "name": "Delete Loan (Staff)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Token {{auth_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v2/loans/1/",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v2", "loans", "1", ""]
+        }
+      }
+    }
+  ]
+}
