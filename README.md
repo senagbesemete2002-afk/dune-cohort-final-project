@@ -32,7 +32,7 @@ A Django library management application that lets users register, log in, browse
 4. Install dependencies:
 
 ```powershell
-python -m pip install -r requirement.txt
+python -m pip install -r requirements.txt
 ```
 
 5. Run database migrations:
@@ -72,8 +72,30 @@ http://127.0.0.1:8000/
 6. Check loans in `My Loans`.
 7. Review overdue loans in `Overdue Loans` if any.
 
+## Deployment
+
+This project is configured for deployment on Render.
+
+Required environment variables:
+
+- `DJANGO_SECRET_KEY`
+- `DJANGO_DEBUG=False`
+- `DJANGO_ALLOWED_HOSTS=<your-render-app>.onrender.com`
+- `DATABASE_URL=<your-database-url>`
+
+Render deployment files included:
+
+- `requirements.txt`
+- `Procfile`
+- `runtime.txt`
+
 ## Notes
 
-- The dependency file is named `requirement.txt`.
-- The database file is `db.sqlite3`.
+- The dependency file is named `requirements.txt`.
+- The database file is `db.sqlite3` for local development.
 - If you add new models, run `python manage.py makemigrations` and `python manage.py migrate`.
+- Activate the virtual environment before running commands:
+
+```powershell
+& .\venv\Scripts\Activate.ps1
+```
