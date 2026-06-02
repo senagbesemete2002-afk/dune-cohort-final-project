@@ -18,6 +18,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.views.static import serve as static_serve
+from django.conf.urls import re_path
 
 
 urlpatterns = [
@@ -28,4 +30,11 @@ urlpatterns = [
 
 ]
 
+# Serve media files
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Fallback: explicitly serve media files even on production with DEBUG=False
+if settings.MEDIA_ROOT:
+    urlpatterns += [
+        re_path(r'^media/(?P<path>.*)$', static_serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
